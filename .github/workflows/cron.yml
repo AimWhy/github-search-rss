@@ -4,18 +4,19 @@ on:
     branches:
       - main  # Set a branch name to trigger deployment
   schedule:
-    - cron: '0 0 * * *'
+    # every 1 hour
+    - cron: '0 * * * *'
 jobs:
   book-rss:
     name: "Generate RSS"
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 18
       - name: Install
         run: yarn install
       - name: Generate RSS
@@ -27,3 +28,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
